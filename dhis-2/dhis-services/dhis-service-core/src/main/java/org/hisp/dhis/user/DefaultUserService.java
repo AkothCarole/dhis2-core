@@ -54,6 +54,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+
 /**
  * @author Chau Thu Tran
  */
@@ -342,13 +344,20 @@ public class DefaultUserService
     }
 
     @Override
-    public boolean canAddOrUpdateUser( Collection<String> userGroups )
+    public boolean canUpdateUser( User user, Collection<String> userGroups, User currentUser  )
     {
-        return canAddOrUpdateUser( userGroups, currentUserService.getCurrentUser() );
+        return canUpdateUser( user, currentUser ) && canAddUser( userGroups, currentUser );
     }
 
     @Override
-    public boolean canAddOrUpdateUser( Collection<String> userGroups, User currentUser )
+    public boolean canUpdateUser( User user,  User currentUser )
+    {
+        return canAddUser( getUids( user.getGroups() ), currentUser )
+            && currentUser.getUserCredentials().canModifyUser( user.getUserCredentials() );
+    }
+
+    @Override
+    public boolean canAddUser( Collection<String> userGroups, User currentUser )
     {
         if ( currentUser == null )
         {

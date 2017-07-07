@@ -280,13 +280,13 @@ public class AddUserAction
     public String execute()
         throws Exception
     {
-        if ( !userService.canAddOrUpdateUser( ugSelected ) )
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( !userService.canAddUser( ugSelected, currentUser ) )
         {
             throw new AccessDeniedException( "You cannot add this user" );
         }
         
-        User currentUser = currentUserService.getCurrentUser();
-
         // ---------------------------------------------------------------------
         // User credentials and user
         // ---------------------------------------------------------------------

@@ -40,6 +40,7 @@ import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.AttributeUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -110,6 +111,9 @@ public class SetupTreeAction
     {
         this.localeManager = localeManager;
     }
+
+    @Autowired
+    private CurrentUserService currentUserService;
 
     @Autowired
     private UserSettingService userSettingService;
@@ -224,7 +228,9 @@ public class SetupTreeAction
         {
             user = userService.getUser( id );
 
-            if ( !userService.canAddOrUpdateUser( IdentifiableObjectUtils.getUids( user.getGroups() ) ) )
+            User currentUser = currentUserService.getCurrentUser();
+
+            if ( !userService.canUpdateUser( user, currentUser ) )
             {
                 throw new AccessDeniedException( "You cannot edit this user" );
             }

@@ -153,6 +153,30 @@ public interface UserService
     List<User> getUsersByPhoneNumber( String phoneNumber );
 
     /**
+     * Tests whether the current user is allowed to update a user and assign to
+     * that user a set of groups with the given group identifiers. The current
+     * user must be able to manage the user given the user's currently-assigned
+     * groups, and the current user must also be able to manage the user after
+     * assigning the new set of groups.
+     *
+     * @param user the user to modify.
+     * @param userGroups the user group identifiers.
+     * @param currentUser the current user.
+     * @return true if the current user can update user, false if not.
+     */
+    boolean canUpdateUser( User user, Collection<String> userGroups, User currentUser );
+
+    /**
+     * Tests whether the current user is allowed to update a user (without
+     * changing the user group assignemnts, such as for disable or delete.)
+     *
+     * @param user the user to modify.
+     * @param currentUser the current user.
+     * @return true if the current user can update user, false if not.
+     */
+    boolean canUpdateUser( User user,  User currentUser );
+
+    /**
      * Tests whether the current user is allowed to create a user associated
      * with the given user group identifiers. Returns true if current user has
      * the F_USER_ADD authority. Returns true if the current user has the
@@ -160,11 +184,10 @@ public interface UserService
      * user groups. Returns false otherwise.
      *
      * @param userGroups the user group identifiers.
+     * @param currentUser the current user.
      * @return true if the current user can create user, false if not.
      */
-    boolean canAddOrUpdateUser( Collection<String> userGroups );
-
-    boolean canAddOrUpdateUser( Collection<String> userGroups, User currentUser );
+    boolean canAddUser( Collection<String> userGroups, User currentUser );
 
     // -------------------------------------------------------------------------
     // UserCredentials

@@ -103,8 +103,8 @@ public class RemoveUserAction
         {
             return ERROR;
         }
-        
-        if ( !currentUser.getUserCredentials().canModifyUser( user.getUserCredentials() ) )
+
+        if ( !userService.canUpdateUser( user, currentUser ) )
         {
             return ERROR;
         }

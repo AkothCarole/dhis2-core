@@ -434,7 +434,7 @@ public class UserController
         User parsed = renderService.fromXml( request.getInputStream(), getEntityClass() );
         parsed.setUid( pvUid );
 
-        if ( !userService.canAddOrUpdateUser( IdentifiableObjectUtils.getUids( parsed.getGroups() ), currentUser ) )
+        if ( !userService.canUpdateUser( users.get( 0 ), IdentifiableObjectUtils.getUids( parsed.getGroups() ), currentUser ) )
         {
             throw new WebMessageException( WebMessageUtils.conflict( "You must have permissions to create user, or ability to manage at least one user group for the user." ) );
         }
@@ -476,7 +476,7 @@ public class UserController
         User parsed = renderService.fromJson( request.getInputStream(), getEntityClass() );
         parsed.setUid( pvUid );
 
-        if ( !userService.canAddOrUpdateUser( IdentifiableObjectUtils.getUids( parsed.getGroups() ), currentUser ) )
+        if ( !userService.canUpdateUser( users.get( 0 ), IdentifiableObjectUtils.getUids( parsed.getGroups() ), currentUser ) )
         {
             throw new WebMessageException( WebMessageUtils.conflict( "You must have permissions to create user, or ability to manage at least one user group for the user." ) );
         }
@@ -514,7 +514,7 @@ public class UserController
             throw new CreateAccessDeniedException( "You don't have the proper permissions to create this object." );
         }
 
-        if ( !userService.canAddOrUpdateUser( IdentifiableObjectUtils.getUids( user.getGroups() ), currentUser ) )
+        if ( !userService.canAddUser( IdentifiableObjectUtils.getUids( user.getGroups() ), currentUser ) )
         {
             throw new WebMessageException( WebMessageUtils.conflict( "You must have permissions to create user, or ability to manage at least one user group for the user." ) );
         }

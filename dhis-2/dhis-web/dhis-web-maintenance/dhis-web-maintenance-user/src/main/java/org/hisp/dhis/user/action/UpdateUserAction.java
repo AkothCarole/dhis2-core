@@ -238,18 +238,19 @@ public class UpdateUserAction
     public String execute()
         throws Exception
     {
-        if ( !userService.canAddOrUpdateUser( ugSelected ) )
+        User user = userService.getUser( id );
+
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( !userService.canUpdateUser( user, ugSelected, currentUser ) )
         {
             throw new AccessDeniedException( "You cannot edit this user" );
         }
         
-        User currentUser = currentUserService.getCurrentUser();
-
         // ---------------------------------------------------------------------
         // User credentials and user
         // ---------------------------------------------------------------------
 
-        User user = userService.getUser( id );
         user.setSurname( StringUtils.trimToNull( surname ) );
         user.setFirstName( StringUtils.trimToNull( firstName ) );
         user.setEmail( StringUtils.trimToNull( email ) );

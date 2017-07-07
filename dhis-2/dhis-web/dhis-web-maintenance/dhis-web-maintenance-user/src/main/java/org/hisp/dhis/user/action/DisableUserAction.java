@@ -78,8 +78,8 @@ public class DisableUserAction
         {
             return ERROR;
         }
-        
-        if ( !currentUser.getUserCredentials().canModifyUser( credentials ) )
+
+        if ( !userService.canUpdateUser( credentials.getUser(), currentUser ) )
         {
             return ERROR;
         }
